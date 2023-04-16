@@ -15,7 +15,7 @@ def get_fonts(folder=None):
     else:
         cmd = ['fc-list', ':', 'file', 'family', 'style']
     for line in subprocess.check_output(cmd).decode('utf-8').split("\n"):
-        logger.debug(line)
+        # logger.debug(line)
         line.strip()
         if not line: continue
         if 'otf' not in line and 'ttf' not in line: continue
@@ -38,5 +38,5 @@ def get_fonts(folder=None):
             try: fonts[families[i]]
             except: fonts[families[i]] = dict()
             fonts[families[i]][styles[i]] = path
-            logger.debug("Added this font: " + str((families[i], styles[i], path)))
+            # logger.debug("Added this font: " + str((families[i], styles[i], path)))
     return fonts

@@ -8,6 +8,7 @@ This is a web service to print labels on Brother QL label printers.
 import sys, logging, random, json, argparse
 from io import BytesIO
 
+import bottle
 from bottle import run, route, get, post, response, request, jinja2_view as view, static_file, redirect
 from PIL import Image, ImageDraw, ImageFont
 
@@ -70,6 +71,7 @@ def get_label_context(request):
       'margin_bottom': float(d.get('margin_bottom', 45))/100.,
       'margin_left':   float(d.get('margin_left',   35))/100.,
       'margin_right':  float(d.get('margin_right',  35))/100.,
+      'label_count': int(d.get('label_count', 1)),
     }
     context['margin_top']    = int(context['font_size']*context['margin_top'])
     context['margin_bottom'] = int(context['font_size']*context['margin_bottom'])
@@ -116,8 +118,9 @@ def create_label_im(text, **kwargs):
         if line == '': line = ' '
         lines.append(line)
     text = '\n'.join(lines)
-    linesize = im_font.getsize(text)
-    textsize = draw.multiline_textsize(text, font=im_font)
+    # linesize = im_font.getsize(text)
+    left, top, right, bottom = draw.multiline_textbbox(xy=(0, 0), text=text, font=im_font)
+    textsize = (right - left, bottom - top)
     width, height = kwargs['width'], kwargs['height']
     if kwargs['orientation'] == 'standard':
         if label_type in (ENDLESS_LABEL,):
@@ -190,7 +193,8 @@ def print_text():
         return return_dict
 
     im = create_label_im(**context)
-    if DEBUG: im.save('sample-out.png')
+    if bottle.DEBUG:
+        im.save('sample-out.png')
 
     if context['kind'] == ENDLESS_LABEL:
         rotate = 0 if context['orientation'] == 'standard' else 90
@@ -203,10 +207,12 @@ def print_text():
         red = True
     create_label(qlr, im, context['label_size'], red=red, threshold=context['threshold'], cut=True, rotate=rotate)
 
-    if not DEBUG:
+    if not bottle.DEBUG:
         try:
             be = BACKEND_CLASS(CONFIG['PRINTER']['PRINTER'])
-            be.write(qlr.data)
+            for i in range(context['label_count']):
+                logger.info('Printing label %d of %d ...', i, context['label_count'])
+                be.write(qlr.data)
             be.dispose()
             del be
         except Exception as e:
@@ -243,7 +249,8 @@ def main():
     else:
         LOGLEVEL = CONFIG['SERVER']['LOGLEVEL']
 
-    if LOGLEVEL == 'DEBUG':
+    # LOGLEVEL will be numeric if parsed from argv, so we enforce the name here.
+    if logging.getLevelName(LOGLEVEL) == 'DEBUG':
         DEBUG = True
     else:
         DEBUG = False
@@ -264,7 +271,6 @@ def main():
 
 
     logging.basicConfig(level=LOGLEVEL)
-
     try:
         selected_backend = guess_backend(CONFIG['PRINTER']['PRINTER'])
     except ValueError:

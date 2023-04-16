@@ -103,6 +103,24 @@
             </div>
           </div>
         </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
+                  <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                  Amount
+                </a>
+              </h4>
+            </div>
+            <div id="collapse4" class="panel-collapse collapse">
+              <div class="chooser panel-body">
+              <label for="labelCount">Label Count:</label>
+              <div class="input-group labelCount">
+                <input id="labelCount" class="form-control" type="number" min="1" max="200" value="1" required>
+              </div>
+              </div> <!-- class="chooser panel-body" -->
+            </div>
+        </div>
       </fieldset>
     </div>
     <div class="col-md-4">
@@ -149,7 +167,8 @@ function formData() {
     margin_top:    $('#marginTop').val(),
     margin_bottom: $('#marginBottom').val(),
     margin_left:   $('#marginLeft').val(),
-    margin_right:  $('#marginRight').val()
+    margin_right:  $('#marginRight').val(),
+    label_count: $('#labelCount').val(),
   }
 }
 
