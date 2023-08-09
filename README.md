@@ -11,15 +11,11 @@ There's also a screenshot showing [how it looks on a smartphone](./static/images
 
 ### Installation
 
-**ProTip™**: If you know how to use Docker, you might want to use my ready-to-use Docker image to deploy this software.
-It can be found [on the Docker hub](https://hub.docker.com/r/pklaus/brother_ql_web/).  
-Otherwise, follow the instructions below.
-
 Get the code:
 
-    git clone https://github.com/pklaus/brother_ql_web.git
+    git clone https://github.com/FriedrichFroebel/brother_ql_web.git
 
-or download [the ZIP file](https://github.com/pklaus/brother_ql_web/archive/master.zip) and unpack it.
+or download [the ZIP file](https://github.com/FriedrichFroebel/brother_ql_web/archive/master.zip) and unpack it.
 
 Install the requirements:
 
@@ -69,12 +65,12 @@ To start the server, run `./brother_ql_web.py`. The command line parameters over
 
 Once it's running, access the web interface by opening the page with your browser.
 If you run it on your local machine, go to <http://localhost:8013> (You can change
-the default port 8013 using the --port argument).
-You will then be forwarded by default to the interactive web gui located at `/labeldesigner`.
+the default port 8013 using the `--port` argument).
+You will then be forwarded by default to the interactive web GUI located at `/labeldesigner`.
 
 All in all, the web server offers:
 
-* a Web GUI allowing you to print your labels at `/labeldesigner`,
+* a web GUI allowing you to print your labels at `/labeldesigner`,
 * an API at `/api/print/text?text=Your_Text&font_size=100&font_family=Minion%20Pro%20(%20Semibold%20)`
   to print a label containing 'Your Text' with the specified font properties.
 
@@ -84,6 +80,6 @@ This software is published under the terms of the GPLv3, see the LICENSE file in
 
 Parts of this package are redistributed software products from 3rd parties. They are subject to different licenses:
 
-* [Bootstrap](https://github.com/twbs/bootstrap), MIT License
-* [Glyphicons](https://getbootstrap.com/docs/3.3/components/#glyphicons), MIT License (as part of Bootstrap 3.3)
-* [jQuery](https://github.com/jquery/jquery), MIT License
+* [Bootstrap](https://github.com/twbs/bootstrap) v5.3.1, MIT License
+* [Bootstrap Icons](https://github.com/twbs/icons) v1.10.5, MIT License
+  * The CSS files received some minor modification to allow the font files to be loaded from the parent directory.

@@ -1,17 +1,50 @@
 #statusBox.alert {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
-.alert .glyphicon{
-  display:table-cell;
+.alert {
+    display: table-cell;
 }
 
 .alert div,
 .alert span{
-  padding-left: 10px;
-  display:table-cell;
+    padding-left: 10px;
+    display: table-cell;
 }
 
 textarea#labelText {
-  resize: none;
+    resize: none;
+}
+
+.jumbotron .h1,
+.jumbotron h1 {
+    color: inherit
+}
+.jumbotron p {
+    margin-bottom: 15px;
+    font-size: 21px;
+    font-weight: 200
+}
+.jumbotron > hr {
+    border-top-color: #d5d5d5
+}
+.container .jumbotron,
+.container-fluid .jumbotron {
+    padding-right: 15px;
+    padding-left: 15px;
+    border-radius: 6px
+}
+@media screen and (min-width: 768px) {
+    .jumbotron {
+        padding-top: 48px;
+        padding-bottom: 48px
+    }
+    .container .jumbotron,
+    .container-fluid .jumbotron {
+        padding-right: 60px;
+        padding-left: 60px
+    }
+    .jumbotron .h1,.jumbotron h1 {
+        font-size: 63px
+    }
 }

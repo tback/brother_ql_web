@@ -61,6 +61,7 @@ def labeldesigner():
         "label_sizes": LABEL_SIZES,
         "website": CONFIG["WEBSITE"],
         "label": CONFIG["LABEL"],
+        "default_orientation": CONFIG["LABEL"]["DEFAULT_ORIENTATION"],
     }
 
 
@@ -87,6 +88,7 @@ def get_label_context(request):
         "margin_left": float(d.get("margin_left", 35)) / 100.0,
         "margin_right": float(d.get("margin_right", 35)) / 100.0,
         "label_count": int(d.get("label_count", 1)),
+        "high_quality": bool(d.get("high_quality", True)),
     }
     context["margin_top"] = int(context["font_size"] * context["margin_top"])
     context["margin_bottom"] = int(context["font_size"] * context["margin_bottom"])
@@ -229,9 +231,8 @@ def print_text():
         rotate = "auto"
 
     qlr = BrotherQLRaster(CONFIG["PRINTER"]["MODEL"])
-    red = False
-    if "red" in context["label_size"]:
-        red = True
+    red = "red" in context["label_size"]
+    high_quality = context["high_quality"]
     create_label(
         qlr,
         im,
@@ -240,6 +241,7 @@ def print_text():
         threshold=context["threshold"],
         cut=True,
         rotate=rotate,
+        dpi_600=high_quality,
     )
 
     if not bottle.DEBUG:
