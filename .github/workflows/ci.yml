@@ -43,7 +43,7 @@ jobs:
         python -m flake8 .
     - name: run black
       run:
-        black --check --diff
+        black --check --diff .
     - name: run mypy
       run:
         mypy brother_ql_web/ tests/
