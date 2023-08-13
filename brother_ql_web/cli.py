@@ -2,14 +2,10 @@ import logging
 import random
 import sys
 from argparse import ArgumentParser, Namespace
-from typing import TYPE_CHECKING
 
 from brother_ql.devicedependent import models, label_sizes
 from brother_ql_web.configuration import Configuration, Font
 from brother_ql_web.utils import collect_fonts
-
-if TYPE_CHECKING:
-    from brother_ql_web.configuration import Configuration
 
 
 logger = logging.getLogger(__name__)
