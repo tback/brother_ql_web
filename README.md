@@ -1,6 +1,6 @@
 ## brother\_ql\_web
 
-This is a web service to print labels on Brother QL label printers.
+This is a web service to print labels on Brother QL label printers. While it is primarily focused on the API/GUI part, the corresponding functionality is provided as a library as well.
 
 You need Python 3 for this software to work.
 
@@ -11,68 +11,63 @@ There's also a screenshot showing [how it looks on a smartphone](./static/images
 
 ### Installation
 
-Get the code:
+The easiest way to use this package is to install it from PyPI:
 
-    git clone https://github.com/FriedrichFroebel/brother_ql_web.git
+    pip install brother_ql_web
 
-or download [the ZIP file](https://github.com/FriedrichFroebel/brother_ql_web/archive/master.zip) and unpack it.
+Alternatively, you can use brother_ql_web without installing it, straight out of an unpacked source tarball or a VCS checkout.
 
-Install the requirements:
+It's also possible to install it from source for the current interpreter with:
 
-    pip install -r requirements.txt
+    pip install .
 
-In addition, `fontconfig` should be installed on your system. It's used to identify and
-inspect fonts on your machine. This package is pre-installed on many Linux distributions.
-If you're using a Mac, I recommend to use [Homebrew](https://brew.sh) to install
-fontconfig using [`brew install fontconfig`](http://brewformulas.org/Fontconfig).
+
+In addition to the Python package requirements itself, `fontconfig` should be installed on your system. It's used to identify and inspect fonts on your machine. This package is pre-installed on many Linux distributions. If you're using a Mac, you might want to use [Homebrew](https://brew.sh) to install fontconfig using [`brew install fontconfig`](https://formulae.brew.sh/formula/fontconfig).
 
 ### Configuration file
 
-Copy `config.example.json` to `config.json` (e.g. `cp config.example.json config.json`) and adjust the values to match your needs.
+Grab a copy of the [example configuration file](https://github.com/FriedrichFroebel/brother_ql_web/blob/master/config.example.json) and adjust it to your needs. You can store this file on your device wherever you want - just make sure to remember the full path as you will have to pass it to the CLI.
 
 ### Startup
 
-To start the server, run `./brother_ql_web.py`. The command line parameters overwrite the values configured in `config.json`. Here's its command line interface:
+To start the server, either run `brother_ql_web` (only works if installed) or `python -m brother_ql_web`. You will always have to pass the path to your configuration file to use and the string descriptor of the printer.
 
-    usage: brother_ql_web.py [-h] [--port PORT] [--loglevel LOGLEVEL]
-                             [--font-folder FONT_FOLDER]
-                             [--default-label-size DEFAULT_LABEL_SIZE]
-                             [--default-orientation {standard,rotated}]
-                             [--model {QL-500,QL-550,QL-560,QL-570,QL-580N,QL-650TD,QL-700,QL-710W,QL-720NW,QL-1050,QL-1060N}]
-                             [printer]
-    
-    This is a web service to print labels on Brother QL label printers.
-    
-    positional arguments:
-      printer               String descriptor for the printer to use (like
-                            tcp://192.168.0.23:9100 or file:///dev/usb/lp0)
-    
-    optional arguments:
-      -h, --help            show this help message and exit
-      --port PORT
-      --loglevel LOGLEVEL
-      --font-folder FONT_FOLDER
-                            folder for additional .ttf/.otf fonts
-      --default-label-size DEFAULT_LABEL_SIZE
-                            Label size inserted in your printer. Defaults to 62.
-      --default-orientation {standard,rotated}
-                            Label orientation, defaults to "standard". To turn
-                            your text by 90°, state "rotated".
-      --model {QL-500,QL-550,QL-560,QL-570,QL-580N,QL-650TD,QL-700,QL-710W,QL-720NW,QL-1050,QL-1060N}
-                            The model of your printer (default: QL-500)
+The most basic call will look like this:
+
+    python -m brother_ql_web --configuration $HOME/printers/brother_ql_web/configuration_dev.json file:///dev/usb/lp0
+
+Additional parameters might be passed and will overwrite the values configured in your configuration file. Please refer to the `--help` flag to learn more about the possible flags you might pass.
 
 ### Usage
 
 Once it's running, access the web interface by opening the page with your browser.
-If you run it on your local machine, go to <http://localhost:8013> (You can change
-the default port 8013 using the `--port` argument).
-You will then be forwarded by default to the interactive web GUI located at `/labeldesigner`.
+
+If you run it on your local machine, go to <http://localhost:8013> (You can change the default port 8013 using the `--port` argument). You will then be forwarded by default to the interactive web GUI located at `/labeldesigner`.
 
 All in all, the web server offers:
 
 * a web GUI allowing you to print your labels at `/labeldesigner`,
 * an API at `/api/print/text?text=Your_Text&font_size=100&font_family=Minion%20Pro%20(%20Semibold%20)`
   to print a label containing 'Your Text' with the specified font properties.
+
+### About this fork
+
+This repository contains my personal fork of the original repository.
+
+At the moment, there is no real activity in the upstream project, with the last change happening in January 2020. In the meantime, some dependencies got outdated and *Pillow* deprecated and dropped some methods which break the whole application.
+
+Additionally, I think that it makes more sense to let everyone install this package from PyPI and pass a configuration file parameter to it for customization instead of basically hardcoding the configuration file path to `config.json` in the current application directory.
+
+At the moment there are no plans to submit any pull request to the upstream repository.
+
+#### Differences from upstream
+
+  * Package requires Python ≥ 3.8.
+  * Migrate to a package-based structure.
+  * Ensure compatibility with latest dependency versions.
+  * Upgrade Bootstrap and drop jQuery as Bootstrap does not rely on it anymore.
+  * Conform to PEP8 coding style.
+  * Add some more printing options, like the number of labels to print for a session.
 
 ### License
 

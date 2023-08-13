@@ -1,0 +1,3 @@
+from brother_ql.reader import BrotherQLReader as BrotherQLReader
+
+def main(): ...

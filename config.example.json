@@ -1,27 +1,27 @@
 {
-  "SERVER": {
-    "PORT": 8013,
-    "HOST": "",
-    "LOGLEVEL": "WARNING",
-    "ADDITIONAL_FONT_FOLDER": false
+  "server": {
+    "port": 8013,
+    "host": "",
+    "log_level": "WARNING",
+    "additional_font_folder": ""
   },
-  "PRINTER": {
-    "MODEL": "QL-500",
-    "PRINTER": "file:///dev/usb/lp1"
+  "printer": {
+    "model": "QL-500",
+    "printer": "file:///dev/usb/lp1"
   },
-  "LABEL": {
-    "DEFAULT_SIZE": "62",
-    "DEFAULT_ORIENTATION": "standard",
-    "DEFAULT_FONT_SIZE": 70,
-    "DEFAULT_FONTS": [
+  "label": {
+    "default_size": "62",
+    "default_orientation": "standard",
+    "default_font_size": 70,
+    "default_fonts": [
       {"family": "Minion Pro",      "style": "Semibold"},
       {"family": "Linux Libertine", "style": "Regular"},
       {"family": "DejaVu Serif",    "style": "Book"}
     ]
   },
-  "WEBSITE": {
-    "HTML_TITLE": "Label Designer",
-    "PAGE_TITLE": "Brother QL Label Designer",
-    "PAGE_HEADLINE": "Design your label and print it…"
+  "website": {
+    "html_title": "Label Designer",
+    "page_title": "Brother QL Label Designer",
+    "page_headline": "Design your label and print it…"
   }
 }
