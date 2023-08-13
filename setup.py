@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup, find_namespace_packages
 from pathlib import Path
 
 
@@ -14,7 +14,7 @@ setup(
     long_description_content_type="text/markdown",
     author="Philipp Klaus (initial), FriedrichFröbel",
     url="https://github.com/FriedrichFroebel/brother_ql_web/",
-    packages=find_packages(where=".", exclude=["tests", "tests.*"]),
+    packages=find_namespace_packages(where=".", exclude=["tests", "tests.*"]),
     include_package_data=True,
     python_requires=">=3.8, <4",
     install_requires=[
