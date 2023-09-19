@@ -42,5 +42,5 @@ def get_fonts(folder: str | None = None) -> dict[str, dict[str, str]]:
             continue
         for i in range(len(families)):
             fonts[families[i]][styles[i]] = path
-            logger.debug("Added this font: %s", (families[i], styles[i], path))
+            # logger.debug("Added this font: %s", (families[i], styles[i], path))
     return dict(fonts)

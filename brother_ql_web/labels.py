@@ -206,8 +206,10 @@ def generate_label(
     if save_image_to:
         image.save(save_image_to)
 
+    red: bool = False
+    rotate: int | str = 0
     if parameters.kind == ENDLESS_LABEL:
-        rotate: int | str = 0 if parameters.orientation == "standard" else 90
+        rotate = 0 if parameters.orientation == "standard" else 90
     elif parameters.kind in (ROUND_DIE_CUT_LABEL, DIE_CUT_LABEL):
         rotate = "auto"
         red = "red" in parameters.label_size
