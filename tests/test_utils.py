@@ -68,7 +68,7 @@ class GetBackendClassTestCase(TestCase):
             utils.BackendGuessingError,
             r"^Couln't guess the backend to use from the printer string descriptor$",
         ):
-            backend = utils.get_backend_class(configuration)
+            utils.get_backend_class(configuration)
 
     def test_known_backend(self):
         from brother_ql.backends.linux_kernel import BrotherQLBackendLinuxKernel

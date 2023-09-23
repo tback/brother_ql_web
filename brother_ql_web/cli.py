@@ -103,7 +103,9 @@ def update_configuration_from_parameters(
     if parameters.log_level:
         # `log_level` will be numeric if parsed from argv, so we enforce the name here.
         level = parameters.log_level
-        configuration.server.log_level = logging.getLevelName(level) if isinstance(level, int) else level
+        configuration.server.log_level = (
+            logging.getLevelName(level) if isinstance(level, int) else level
+        )
     if parameters.font_folder:
         configuration.server.additional_font_folder = parameters.font_folder
 

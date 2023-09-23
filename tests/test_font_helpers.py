@@ -7,52 +7,52 @@ class GetFontsTestCase(TestCase):
     # Reference: https://packages.ubuntu.com/lunar/all/fonts-roboto-unhinted/filelist
     ROBOTO_FILES = {
         "Roboto": {
-            "Thin": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Thin.ttf",
-            "Medium Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-MediumItalic.ttf",
-            "Thin Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-ThinItalic.ttf",
-            "Light Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-LightItalic.ttf",
-            "Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Italic.ttf",
-            "Black Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-BlackItalic.ttf",
-            "Medium": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Medium.ttf",
-            "Bold": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Bold.ttf",
-            "Black": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Black.ttf",
-            "Light": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Light.ttf",
-            "Regular": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Regular.ttf",
-            "Bold Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-BoldItalic.ttf",
+            "Thin": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Thin.ttf",  # noqa: E501
+            "Medium Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-MediumItalic.ttf",  # noqa: E501
+            "Thin Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-ThinItalic.ttf",  # noqa: E501
+            "Light Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-LightItalic.ttf",  # noqa: E501
+            "Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Italic.ttf",  # noqa: E501
+            "Black Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-BlackItalic.ttf",  # noqa: E501
+            "Medium": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Medium.ttf",  # noqa: E501
+            "Bold": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Bold.ttf",  # noqa: E501
+            "Black": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Black.ttf",  # noqa: E501
+            "Light": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Light.ttf",  # noqa: E501
+            "Regular": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Regular.ttf",  # noqa: E501
+            "Bold Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-BoldItalic.ttf",  # noqa: E501
         },
         "Roboto Black": {
-            "Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-BlackItalic.ttf",
-            "Regular": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Black.ttf",
+            "Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-BlackItalic.ttf",  # noqa: E501
+            "Regular": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Black.ttf",  # noqa: E501
         },
         "Roboto Condensed": {
-            "Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-Italic.ttf",
-            "Bold": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-Bold.ttf",
-            "Medium": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-Medium.ttf",
-            "Bold Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-BoldItalic.ttf",
-            "Light Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-LightItalic.ttf",
-            "Light": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-Light.ttf",
-            "Medium Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-MediumItalic.ttf",
-            "Regular": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-Regular.ttf",
+            "Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-Italic.ttf",  # noqa: E501
+            "Bold": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-Bold.ttf",  # noqa: E501
+            "Medium": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-Medium.ttf",  # noqa: E501
+            "Bold Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-BoldItalic.ttf",  # noqa: E501
+            "Light Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-LightItalic.ttf",  # noqa: E501
+            "Light": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-Light.ttf",  # noqa: E501
+            "Medium Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-MediumItalic.ttf",  # noqa: E501
+            "Regular": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-Regular.ttf",  # noqa: E501
         },
         "Roboto Condensed Light": {
-            "Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-LightItalic.ttf",
-            "Regular": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-Light.ttf",
+            "Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-LightItalic.ttf",  # noqa: E501
+            "Regular": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-Light.ttf",  # noqa: E501
         },
         "Roboto Condensed Medium": {
-            "Regular": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-Medium.ttf",
-            "Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-MediumItalic.ttf",
+            "Regular": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-Medium.ttf",  # noqa: E501
+            "Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-MediumItalic.ttf",  # noqa: E501
         },
         "Roboto Light": {
-            "Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-LightItalic.ttf",
-            "Regular": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Light.ttf",
+            "Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-LightItalic.ttf",  # noqa: E501
+            "Regular": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Light.ttf",  # noqa: E501
         },
         "Roboto Medium": {
-            "Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-MediumItalic.ttf",
-            "Regular": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Medium.ttf",
+            "Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-MediumItalic.ttf",  # noqa: E501
+            "Regular": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Medium.ttf",  # noqa: E501
         },
         "Roboto Thin": {
-            "Regular": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Thin.ttf",
-            "Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-ThinItalic.ttf",
+            "Regular": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Thin.ttf",  # noqa: E501
+            "Italic": "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-ThinItalic.ttf",  # noqa: E501
         },
     }
 

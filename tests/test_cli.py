@@ -203,10 +203,11 @@ class UpdateConfigurationFromParametersTestCase(TestCase):
         )
         configuration.label.default_size = "dummy"
 
-        # Do not assert the label sizes, but make sure that the value list starts with a number.
+        # Do not assert the label sizes, but make sure that the value list starts with
+        # a number.
         with self.assertRaisesRegex(
             cli.InvalidLabelSize,
-            "^Invalid default label size\. Please choose one of the following:\\n\d.+$",
+            r"^Invalid default label size\. Please choose one of the following:\\n\d.+$",  # noqa: E501
         ):
             cli.update_configuration_from_parameters(
                 parameters=parameters, configuration=configuration
@@ -228,7 +229,7 @@ class UpdateConfigurationFromParametersTestCase(TestCase):
         with mock.patch.object(cli, "collect_fonts", return_value=[]) as collect_mock:
             with self.assertRaisesRegex(
                 cli.NoFontFound,
-                '^Not a single font was found on your system. Please install some or use the "--font-folder" argument.$',
+                '^Not a single font was found on your system. Please install some or use the "--font-folder" argument.$',  # noqa: E501
             ):
                 cli.update_configuration_from_parameters(
                     parameters=parameters, configuration=configuration
