@@ -26,6 +26,9 @@ jobs:
     - name: apt update
       run:
         sudo apt-get update
+    - name: install APT dependencies
+      run:
+        sudo apt-get install fonts-roboto
     - name: update PIP
       run:
         python -m pip install --upgrade pip

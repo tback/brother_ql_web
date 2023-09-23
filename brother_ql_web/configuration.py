@@ -22,8 +22,13 @@ class Configuration:
             name: str = field.name
             field_type: str = cast(str, field.type)
             field_class = global_variables[field_type]
-            kwargs_inner = parsed.pop(name)
-            instance = field_class(**kwargs_inner)
+            kwargs_inner = parsed.pop(name, None)
+            if name == "printer" and not kwargs_inner:
+                raise ValueError("Printer configuration missing")
+            if not kwargs_inner:
+                instance = field_class()
+            else:
+                instance = field_class(**kwargs_inner)
             kwargs[name] = instance
         if parsed:
             raise ValueError(f"Unknown configuration values: {parsed}")
@@ -51,7 +56,7 @@ class PrinterConfiguration:
     printer: str
 
 
-@dataclass
+@dataclass(frozen=True)
 class Font:
     family: str
     style: str

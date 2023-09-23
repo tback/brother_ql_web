@@ -96,13 +96,14 @@ def _choose_default_font(fonts: dict, configuration: Configuration) -> None:
 
 def update_configuration_from_parameters(
     parameters: Namespace, configuration: Configuration
-) -> Configuration:
+):
     # Server configuration.
     if parameters.port:
         configuration.server.port = parameters.port
     if parameters.log_level:
         # `log_level` will be numeric if parsed from argv, so we enforce the name here.
-        configuration.server.log_level = logging.getLevelName(parameters.log_level)
+        level = parameters.log_level
+        configuration.server.log_level = logging.getLevelName(level) if isinstance(level, int) else level
     if parameters.font_folder:
         configuration.server.additional_font_folder = parameters.font_folder
 
@@ -121,7 +122,7 @@ def update_configuration_from_parameters(
     # Configuration issues.
     if configuration.label.default_size not in label_sizes:
         raise InvalidLabelSize(
-            "Invalid default label size. Please choose one of the following:\n:"
+            "Invalid default label size. Please choose one of the following:\n"
             + " ".join(label_sizes)
         )
 
@@ -135,5 +136,3 @@ def update_configuration_from_parameters(
 
     # Set font data.
     _choose_default_font(fonts=fonts, configuration=configuration)
-
-    return configuration

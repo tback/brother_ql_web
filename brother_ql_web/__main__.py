@@ -6,7 +6,7 @@ def main():
 
     cli_parameters = cli.get_parameters()
     configuration = Configuration.from_json(cli_parameters.configuration)
-    configuration = cli.update_configuration_from_parameters(
+    cli.update_configuration_from_parameters(
         configuration=configuration, parameters=cli_parameters
     )
     logging.basicConfig(level=configuration.server.log_level)
