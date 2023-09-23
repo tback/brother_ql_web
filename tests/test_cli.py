@@ -207,7 +207,7 @@ class UpdateConfigurationFromParametersTestCase(TestCase):
         # a number.
         with self.assertRaisesRegex(
             cli.InvalidLabelSize,
-            r"^Invalid default label size\. Please choose one of the following:\\n\d.+$",  # noqa: E501
+            r"^Invalid default label size\. Please choose one of the following:\n\d.+$",  # noqa: E501
         ):
             cli.update_configuration_from_parameters(
                 parameters=parameters, configuration=configuration
