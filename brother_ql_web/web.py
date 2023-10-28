@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Any, cast
 
 import bottle
-from brother_ql.backends import BrotherQLBackendGeneric
 from brother_ql_web.configuration import Configuration
 from brother_ql_web.labels import (
     LabelParameters,
@@ -14,6 +13,7 @@ from brother_ql_web.labels import (
     generate_label,
     print_label,
 )
+from brother_ql_web.utils import BACKEND_TYPE
 
 
 logger = logging.getLogger(__name__)
@@ -133,7 +133,7 @@ def print_text() -> dict[str, bool | str]:
                     Configuration, get_config("brother_ql_web.configuration")
                 ),
                 backend_class=cast(
-                    type[BrotherQLBackendGeneric],
+                    BACKEND_TYPE,
                     get_config("brother_ql_web.backend_class"),
                 ),
             )
@@ -152,7 +152,7 @@ def main(
     configuration: Configuration,
     fonts: dict[str, dict[str, str]],
     label_sizes: list[tuple[str, str]],
-    backend_class: type[BrotherQLBackendGeneric],
+    backend_class: BACKEND_TYPE,
 ) -> None:
     app = bottle.default_app()
     app.config["brother_ql_web.configuration"] = configuration

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from argparse import Namespace
 from io import StringIO
 from contextlib import redirect_stderr

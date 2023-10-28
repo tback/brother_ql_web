@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from unittest import TestCase
 
 from brother_ql_web.font_helpers import get_fonts
