@@ -61,7 +61,9 @@ class ConfigurationTestCase(TestCase):
     @property
     def example_json(self) -> dict[str, dict[str, str | int | dict[str, str]]]:
         with open(self.example_configuration_path) as fd:
-            return cast(Dict[str, Dict[str, Union[str, int, Dict[str, str]]]], json.load(fd))
+            return cast(
+                Dict[str, Dict[str, Union[str, int, Dict[str, str]]]], json.load(fd)
+            )
 
     def test_from_json(self) -> None:
         with NamedTemporaryFile(suffix=".json", mode="w+t") as json_file:
