@@ -1,7 +1,11 @@
+from __future__ import annotations
+
 import logging
 from pathlib import Path
+from typing import Any, cast
 
 import bottle
+from brother_ql.backends import BrotherQLBackendGeneric
 from brother_ql_web.configuration import Configuration
 from brother_ql_web.labels import (
     LabelParameters,
@@ -22,34 +26,33 @@ def get_config(key: str) -> object:
     return bottle.request.app.config[key]
 
 
-@bottle.route("/")
-def index():
+@bottle.route("/")  # type: ignore[misc]
+def index() -> None:
     bottle.redirect("/labeldesigner")
 
 
-@bottle.route("/static/<filename:path>")
-def serve_static(filename):
-    return bottle.static_file(filename, root=CURRENT_DIRECTORY / "static")
+@bottle.route("/static/<filename:path>")  # type: ignore[misc]
+def serve_static(filename: str) -> bottle.HTTPResponse:
+    return bottle.static_file(filename, root=str(CURRENT_DIRECTORY / "static"))
 
 
-@bottle.route("/labeldesigner")
-@bottle.jinja2_view("labeldesigner.jinja2")
-def labeldesigner():
-    fonts = get_config("brother_ql_web.fonts")
+@bottle.route("/labeldesigner")  # type: ignore[misc]
+@bottle.jinja2_view("labeldesigner.jinja2")  # type: ignore[misc]
+def labeldesigner() -> dict[str, Any]:
+    fonts = cast(dict[str, dict[str, str]], get_config("brother_ql_web.fonts"))
     font_family_names = sorted(list(fonts.keys()))
+    configuration = cast(Configuration, get_config("brother_ql_web.configuration"))
     return {
         "font_family_names": font_family_names,
         "fonts": fonts,
         "label_sizes": get_config("brother_ql_web.label_sizes"),
-        "website": get_config("brother_ql_web.configuration").website,
-        "label": get_config("brother_ql_web.configuration").label,
-        "default_orientation": get_config(
-            "brother_ql_web.configuration"
-        ).label.default_orientation,
+        "website": configuration.website,
+        "label": configuration.label,
+        "default_orientation": configuration.label.default_orientation,
     }
 
 
-def get_label_parameters(request):
+def get_label_parameters(request: bottle.BaseRequest) -> LabelParameters:
     """
     Might raise LookupError()
     """
@@ -79,9 +82,9 @@ def get_label_parameters(request):
     return LabelParameters(**context)
 
 
-@bottle.get("/api/preview/text")
-@bottle.post("/api/preview/text")
-def get_preview_image():
+@bottle.get("/api/preview/text")  # type: ignore[misc]
+@bottle.post("/api/preview/text")  # type: ignore[misc]
+def get_preview_image() -> bytes:
     parameters = get_label_parameters(bottle.request)
     image = create_label_image(parameters=parameters)
     return_format = bottle.request.query.get("return_format", "png")
@@ -95,20 +98,20 @@ def get_preview_image():
         return image_to_png_bytes(image)
 
 
-@bottle.post("/api/print/text")
-@bottle.get("/api/print/text")
-def print_text():
+@bottle.post("/api/print/text")  # type: ignore[misc]
+@bottle.get("/api/print/text")  # type: ignore[misc]
+def print_text() -> dict[str, bool | str]:
     """
     API to print a label
 
     returns: JSON
     """
-    return_dict = {"success": False}
+    return_dict: dict[str, bool | str] = {"success": False}
 
     try:
         parameters = get_label_parameters(bottle.request)
     except LookupError as e:
-        return_dict["error"] = e.msg
+        return_dict["error"] = str(e)
         return return_dict
 
     if parameters.text is None:
@@ -117,7 +120,7 @@ def print_text():
 
     qlr = generate_label(
         parameters=parameters,
-        configuration=get_config("brother_ql_web.configuration"),
+        configuration=cast(Configuration, get_config("brother_ql_web.configuration")),
         save_image_to="sample-out.png" if bottle.DEBUG else None,
     )
 
@@ -126,8 +129,13 @@ def print_text():
             print_label(
                 parameters=parameters,
                 qlr=qlr,
-                configuration=get_config("brother_ql_web.configuration"),
-                backend_class=get_config("brother_ql_web.backend_class"),
+                configuration=cast(
+                    Configuration, get_config("brother_ql_web.configuration")
+                ),
+                backend_class=cast(
+                    type[BrotherQLBackendGeneric],
+                    get_config("brother_ql_web.backend_class"),
+                ),
             )
         except Exception as e:
             return_dict["message"] = str(e)
@@ -140,7 +148,12 @@ def print_text():
     return return_dict
 
 
-def main(configuration: Configuration, fonts, label_sizes, backend_class):
+def main(
+    configuration: Configuration,
+    fonts: dict[str, dict[str, str]],
+    label_sizes: list[tuple[str, str]],
+    backend_class: type[BrotherQLBackendGeneric],
+) -> None:
     app = bottle.default_app()
     app.config["brother_ql_web.configuration"] = configuration
     app.config["brother_ql_web.fonts"] = fonts

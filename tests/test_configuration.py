@@ -1,5 +1,6 @@
 import json
 from tempfile import NamedTemporaryFile
+from typing import cast
 
 from brother_ql_web.configuration import (
     Configuration,
@@ -56,11 +57,11 @@ CUSTOM_CONFIGURATION = """
 
 class ConfigurationTestCase(TestCase):
     @property
-    def example_json(self) -> dict:
+    def example_json(self) -> dict[str, dict[str, str | int | dict[str, str]]]:
         with open(self.example_configuration_path) as fd:
-            return json.load(fd)
+            return cast(dict[str, dict[str, str | int | dict[str, str]]], json.load(fd))
 
-    def test_from_json(self):
+    def test_from_json(self) -> None:
         with NamedTemporaryFile(suffix=".json", mode="w+t") as json_file:
             json_file.write(CUSTOM_CONFIGURATION)
             json_file.seek(0)
@@ -102,7 +103,7 @@ class ConfigurationTestCase(TestCase):
                 configuration.website,
             )
 
-    def test_from_json__too_many_keys(self):
+    def test_from_json__too_many_keys(self) -> None:
         with NamedTemporaryFile(suffix=".json", mode="w+t") as json_file:
             data = self.example_json
             data["key"] = {"value": 42}
@@ -115,7 +116,7 @@ class ConfigurationTestCase(TestCase):
             ):
                 Configuration.from_json(json_file.name)
 
-    def test_from_json__missing_server_key(self):
+    def test_from_json__missing_server_key(self) -> None:
         with NamedTemporaryFile(suffix=".json", mode="w+t") as json_file:
             data = self.example_json
             del data["server"]
@@ -125,7 +126,7 @@ class ConfigurationTestCase(TestCase):
             configuration = Configuration.from_json(json_file.name)
             self.assertEqual(ServerConfiguration(), configuration.server)
 
-    def test_from_json__missing_printer_key(self):
+    def test_from_json__missing_printer_key(self) -> None:
         with NamedTemporaryFile(suffix=".json", mode="w+t") as json_file:
             data = self.example_json
             del data["printer"]
@@ -135,7 +136,7 @@ class ConfigurationTestCase(TestCase):
             with self.assertRaisesRegex(ValueError, r"^Printer configuration missing$"):
                 Configuration.from_json(json_file.name)
 
-    def test_to_json(self):
+    def test_to_json(self) -> None:
         with NamedTemporaryFile(suffix=".json", mode="w+t") as json_file:
             json_file.write(CUSTOM_CONFIGURATION)
             json_file.seek(0)
@@ -147,7 +148,7 @@ class ConfigurationTestCase(TestCase):
 
 
 class ServerConfigurationTestCase(TestCase):
-    def test_is_in_debug_mode(self):
+    def test_is_in_debug_mode(self) -> None:
         self.assertTrue(ServerConfiguration(log_level="DEBUG").is_in_debug_mode)
 
         for level in ["INFO", "WARNING", "ERROR"]:
@@ -164,12 +165,12 @@ class FontTestCase(TestCase):
 
 
 class LabelConfigurationTestCase(TestCase):
-    def test_post_init(self):
-        default_fonts = [
+    def test_post_init(self) -> None:
+        default_fonts: list[Font | dict[str, str]] = [
             Font(family="Font family", style="Regular"),
             {"family": "Another font family", "style": "Bold"},
         ]
-        configuration = LabelConfiguration(default_fonts=default_fonts)
+        configuration = LabelConfiguration(default_fonts=default_fonts)  # type: ignore[arg-type]  # noqa: E501
         self.assertEqual(
             [
                 Font(family="Font family", style="Regular"),

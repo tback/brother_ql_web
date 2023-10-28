@@ -13,7 +13,7 @@ class Configuration:
     website: WebsiteConfiguration
 
     @classmethod
-    def from_json(cls, json_file: str):
+    def from_json(cls, json_file: str) -> Configuration:
         with open(json_file, mode="r") as fd:
             parsed: dict[str, Any] = json.load(fd)
         kwargs: dict[str, Any] = {}
@@ -70,9 +70,9 @@ class LabelConfiguration:
     default_fonts: list[Font] = dataclass_field(default_factory=list)
     default_font: Font | None = None
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self.default_fonts = [
-            font if isinstance(font, Font) else Font(**font)
+            font if isinstance(font, Font) else Font(**font)  # type: ignore[arg-type]
             for font in self.default_fonts
         ]
 

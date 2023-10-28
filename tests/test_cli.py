@@ -1,3 +1,4 @@
+from argparse import Namespace
 from io import StringIO
 from contextlib import redirect_stderr
 from unittest import mock
@@ -9,11 +10,11 @@ from brother_ql_web.configuration import Configuration, Font
 
 
 class LogLevelTypeTestCase(TestCase):
-    def test_valid(self):
+    def test_valid(self) -> None:
         self.assertEqual(40, cli.log_level_type("ERROR"))
         self.assertEqual(40, cli.log_level_type("error"))
 
-    def test_invalid(self):
+    def test_invalid(self) -> None:
         with self.assertRaisesRegex(
             AttributeError, "^module 'logging' has no attribute 'XYZ'$"
         ):
@@ -21,7 +22,7 @@ class LogLevelTypeTestCase(TestCase):
 
 
 class GetParametersTestCase(TestCase):
-    def test_get_parameters(self):
+    def test_get_parameters(self) -> None:
         with mock.patch(
             "sys.argv",
             [
@@ -36,7 +37,7 @@ class GetParametersTestCase(TestCase):
             parameters = cli.get_parameters()
 
         self.assertEqual(
-            cli.Namespace(
+            Namespace(
                 port=False,
                 log_level=20,
                 font_folder=False,
@@ -63,11 +64,12 @@ class ChooseDefaultFontTestCase(TestCase):
         "family 3": {"Italic": "family3/italic.otf"},
     }
 
-    def assert_is_valid_font(self, font):
-        self.assertIn(font.family, self.FONTS)
-        self.assertIn(font.style, self.FONTS[font.family])
+    def assert_is_valid_font(self, font: Font | None) -> None:
+        self.assertIsNotNone(font)
+        self.assertIn(font.family, self.FONTS)  # type: ignore[union-attr]
+        self.assertIn(font.style, self.FONTS[font.family])  # type: ignore[union-attr]
 
-    def test_invalid_only(self):
+    def test_invalid_only(self) -> None:
         configuration = self.example_configuration
         invalid_font = Font(family="invalid", style="Regular")
         configuration.label.default_fonts = [invalid_font]
@@ -81,16 +83,15 @@ class ChooseDefaultFontTestCase(TestCase):
             self.assertNotEqual(invalid_font, font)
             self.assert_is_valid_font(font)
 
-        stderr = stderr.getvalue()
         self.assertEqual(
             (
                 "Could not find any of the default fonts. Choosing a random one.\n"
                 f"The default font is now set to: {font}\n"
             ),
-            stderr,
+            stderr.getvalue(),
         )
 
-    def test_no_font_given(self):
+    def test_no_font_given(self) -> None:
         configuration = self.example_configuration
         configuration.label.default_fonts = []
 
@@ -113,7 +114,6 @@ class ChooseDefaultFontTestCase(TestCase):
 
         self.assertGreaterEqual(len(set(fonts)), 3, fonts)
 
-        stderr = stderr.getvalue()
         self.assertEqual(
             "".join(
                 (
@@ -122,10 +122,10 @@ class ChooseDefaultFontTestCase(TestCase):
                 )
                 for font in fonts
             ),
-            stderr,
+            stderr.getvalue(),
         )
 
-    def test_first_valid_font_chosen(self):
+    def test_first_valid_font_chosen(self) -> None:
         configuration = self.example_configuration
         configuration.label.default_fonts = [
             Font(family="invalid", style="Regular"),
@@ -142,14 +142,13 @@ class ChooseDefaultFontTestCase(TestCase):
             self.assert_is_valid_font(font)
             self.assertEqual(Font(family="family2", style="Bold"), font)
 
-        stderr = stderr.getvalue()
-        self.assertEqual("", stderr)
+        self.assertEqual("", stderr.getvalue())
 
 
 class UpdateConfigurationFromParametersTestCase(TestCase):
     @staticmethod
     def dummy_choose_default_font(
-        fonts: dict, configuration: Configuration
+        fonts: dict[str, dict[str, str]], configuration: Configuration
     ) -> Configuration:
         configuration.label.default_font = Font(family="My Family", style="Bold")
         return configuration
@@ -160,7 +159,7 @@ class UpdateConfigurationFromParametersTestCase(TestCase):
         configuration.label.default_font = Font(family="My Family", style="Bold")
         return configuration
 
-    def setUp(self):
+    def setUp(self) -> None:
         super().setUp()
 
         choose_patcher = mock.patch.object(
@@ -169,9 +168,9 @@ class UpdateConfigurationFromParametersTestCase(TestCase):
         self.choose_mock = choose_patcher.start()
         self.addCleanup(choose_patcher.stop)
 
-    def test_no_overwrites(self):
+    def test_no_overwrites(self) -> None:
         configuration = self.example_configuration
-        parameters = cli.Namespace(
+        parameters = Namespace(
             port=False,
             log_level=False,
             font_folder=False,
@@ -189,9 +188,9 @@ class UpdateConfigurationFromParametersTestCase(TestCase):
 
         self.assertEqual(self.expected_configuration, configuration)
 
-    def test_invalid_label_size(self):
+    def test_invalid_label_size(self) -> None:
         configuration = self.example_configuration
-        parameters = cli.Namespace(
+        parameters = Namespace(
             port=False,
             log_level=False,
             font_folder=False,
@@ -213,9 +212,9 @@ class UpdateConfigurationFromParametersTestCase(TestCase):
                 parameters=parameters, configuration=configuration
             )
 
-    def test_no_fonts_found(self):
+    def test_no_fonts_found(self) -> None:
         configuration = self.example_configuration
-        parameters = cli.Namespace(
+        parameters = Namespace(
             port=False,
             log_level=False,
             font_folder=False,
@@ -236,9 +235,9 @@ class UpdateConfigurationFromParametersTestCase(TestCase):
                 )
         collect_mock.assert_called_once_with(configuration)
 
-    def test_overwrite_port(self):
+    def test_overwrite_port(self) -> None:
         configuration = self.example_configuration
-        parameters = cli.Namespace(
+        parameters = Namespace(
             port=1337,
             log_level=False,
             font_folder=False,
@@ -258,13 +257,13 @@ class UpdateConfigurationFromParametersTestCase(TestCase):
         expected_configuration.server.port = 1337
         self.assertEqual(expected_configuration, configuration)
 
-    def test_overwrite_log_level(self):
+    def test_overwrite_log_level(self) -> None:
         for log_level in [20, "INFO"]:
             with self.subTest(log_level=log_level):
                 self.choose_mock.reset_mock()
 
                 configuration = self.example_configuration
-                parameters = cli.Namespace(
+                parameters = Namespace(
                     port=False,
                     log_level=log_level,
                     font_folder=False,
@@ -284,9 +283,9 @@ class UpdateConfigurationFromParametersTestCase(TestCase):
                 expected_configuration.server.log_level = "INFO"
                 self.assertEqual(expected_configuration, configuration)
 
-    def test_overwrite_font_folder(self):
+    def test_overwrite_font_folder(self) -> None:
         configuration = self.example_configuration
-        parameters = cli.Namespace(
+        parameters = Namespace(
             port=False,
             log_level=False,
             font_folder="/path/to/fonts",
@@ -315,9 +314,9 @@ class UpdateConfigurationFromParametersTestCase(TestCase):
         expected_configuration.server.additional_font_folder = "/path/to/fonts"
         self.assertEqual(expected_configuration, configuration)
 
-    def test_overwrite_printer(self):
+    def test_overwrite_printer(self) -> None:
         configuration = self.example_configuration
-        parameters = cli.Namespace(
+        parameters = Namespace(
             port=False,
             log_level=False,
             font_folder=False,
@@ -337,9 +336,9 @@ class UpdateConfigurationFromParametersTestCase(TestCase):
         expected_configuration.printer.printer = "/dev/printer42"
         self.assertEqual(expected_configuration, configuration)
 
-    def test_overwrite_model(self):
+    def test_overwrite_model(self) -> None:
         configuration = self.example_configuration
-        parameters = cli.Namespace(
+        parameters = Namespace(
             port=False,
             log_level=False,
             font_folder=False,
@@ -359,9 +358,9 @@ class UpdateConfigurationFromParametersTestCase(TestCase):
         expected_configuration.printer.model = "QL-800"
         self.assertEqual(expected_configuration, configuration)
 
-    def test_overwrite_default_label_size(self):
+    def test_overwrite_default_label_size(self) -> None:
         configuration = self.example_configuration
-        parameters = cli.Namespace(
+        parameters = Namespace(
             port=False,
             log_level=False,
             font_folder=False,
@@ -381,9 +380,9 @@ class UpdateConfigurationFromParametersTestCase(TestCase):
         expected_configuration.label.default_size = "38"
         self.assertEqual(expected_configuration, configuration)
 
-    def test_overwrite_default_orientation(self):
+    def test_overwrite_default_orientation(self) -> None:
         configuration = self.example_configuration
-        parameters = cli.Namespace(
+        parameters = Namespace(
             port=False,
             log_level=False,
             font_folder=False,

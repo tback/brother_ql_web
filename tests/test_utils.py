@@ -8,7 +8,7 @@ from tests import TestCase
 
 
 class CollectFontsTestCase(TestCase):
-    def test_without_folder(self):
+    def test_without_folder(self) -> None:
         dummy_fonts = {
             "DejaVu Serif": {"Book": "dummy", "Regular": "dummy2"},
             "Font": {"Style": "path"},
@@ -21,7 +21,7 @@ class CollectFontsTestCase(TestCase):
         get_mock.assert_called_once_with()
         self.assertEqual(dummy_fonts, fonts)
 
-    def test_with_folder(self):
+    def test_with_folder(self) -> None:
         dummy_fonts = {
             "DejaVu Serif": {"Book": "dummy", "Regular": "dummy2"},
             "Font": {"Style": "path"},
@@ -31,7 +31,7 @@ class CollectFontsTestCase(TestCase):
             "Symbol": {"Regular": "/path3"},
         }
 
-        def get_fonts(directory: None | str = None):
+        def get_fonts(directory: None | str = None) -> dict[str, dict[str, str]]:
             return folder_fonts if directory else dummy_fonts
 
         configuration = self.example_configuration
@@ -55,14 +55,14 @@ class CollectFontsTestCase(TestCase):
 
 
 class GetLabelSizesTestCase(TestCase):
-    def test_get_label_sizes(self):
+    def test_get_label_sizes(self) -> None:
         sizes = utils.get_label_sizes()
         self.assertIn(("38", "38mm endless"), sizes)
         self.assertIn(("62x29", "62mm x 29mm die-cut"), sizes)
 
 
 class GetBackendClassTestCase(TestCase):
-    def test_unknown_backend(self):
+    def test_unknown_backend(self) -> None:
         configuration = self.example_configuration
         configuration.printer.printer = "dummy"
 
@@ -72,7 +72,7 @@ class GetBackendClassTestCase(TestCase):
         ):
             utils.get_backend_class(configuration)
 
-    def test_known_backend(self):
+    def test_known_backend(self) -> None:
         from brother_ql.backends.linux_kernel import BrotherQLBackendLinuxKernel
 
         configuration = self.example_configuration

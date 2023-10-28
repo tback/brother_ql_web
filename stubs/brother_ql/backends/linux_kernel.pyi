@@ -1,7 +1,7 @@
 from .generic import BrotherQLBackendGeneric as BrotherQLBackendGeneric
 from _typeshed import Incomplete
 
-def list_available_devices(): ...
+def list_available_devices() -> list[dict[str, str | None]]: ...
 
 class BrotherQLBackendLinuxKernel(BrotherQLBackendGeneric):
     read_timeout: float
@@ -9,4 +9,4 @@ class BrotherQLBackendLinuxKernel(BrotherQLBackendGeneric):
     dev: Incomplete
     write_dev: Incomplete
     read_dev: Incomplete
-    def __init__(self, device_specifier) -> None: ...
+    def __init__(self, device_specifier: str) -> None: ...

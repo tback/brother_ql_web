@@ -1,4 +1,4 @@
-def main():
+def main() -> None:
     import logging
 
     from brother_ql_web import cli, utils, web

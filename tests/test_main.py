@@ -11,7 +11,7 @@ class Backend:
 
 
 class MainTestCase(TestCase):
-    def test_main(self):
+    def test_main(self) -> None:
         fonts = {
             "DejaVu Serif": {"Book": "dummy", "Regular": "dummy2"},
         }

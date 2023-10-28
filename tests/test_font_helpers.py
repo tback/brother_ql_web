@@ -56,7 +56,12 @@ class GetFontsTestCase(TestCase):
         },
     }
 
-    def assert_font_dictionary_subset(self, expected, actual, not_in_name: str = ""):
+    def assert_font_dictionary_subset(
+        self,
+        expected: dict[str, dict[str, str]],
+        actual: dict[str, dict[str, str]],
+        not_in_name: str = "",
+    ) -> None:
         for font_name, font_styles in expected.items():
             self.assertIn(font_name, actual)
             actual_styles = actual[font_name]
@@ -67,11 +72,11 @@ class GetFontsTestCase(TestCase):
             if not_in_name:
                 self.assertNotIn(not_in_name, font_name)
 
-    def test_get_all(self):
+    def test_get_all(self) -> None:
         fonts = get_fonts()
         self.assert_font_dictionary_subset(expected=self.ROBOTO_FILES, actual=fonts)
 
-    def test_get_from_folder(self):
+    def test_get_from_folder(self) -> None:
         fonts = get_fonts(folder="/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF")
         expected = {
             key: value

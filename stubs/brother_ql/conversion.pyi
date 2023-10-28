@@ -10,8 +10,13 @@ from brother_ql.devicedependent import (
 )
 from brother_ql.image_trafos import filtered_hsv as filtered_hsv
 from brother_ql.raster import BrotherQLRaster as BrotherQLRaster
-from builtins import str as str
+from PIL import Image
 
 logger: Incomplete
 
-def convert(qlr, images, label, **kwargs): ...
+def convert(
+    qlr: BrotherQLRaster,
+    images: list[str | Image.Image],
+    label: str,
+    **kwargs: bool | int | str
+) -> bytes: ...

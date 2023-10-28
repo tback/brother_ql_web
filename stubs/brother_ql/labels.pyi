@@ -1,5 +1,6 @@
 from brother_ql.helpers import ElementsManager as ElementsManager
 from enum import IntEnum
+from typing import Any
 
 class FormFactor(IntEnum):
     DIE_CUT: int
@@ -26,20 +27,20 @@ class Label:
     def name(self) -> str: ...
     def __init__(
         self,
-        identifier,
-        tape_size,
-        form_factor,
-        dots_total,
-        dots_printable,
-        offset_r,
-        feed_margin,
-        restricted_to_models,
-        color,
+        identifier: str,
+        tape_size: tuple[int, int],
+        form_factor: FormFactor,
+        dots_total: tuple[int, int],
+        dots_printable: tuple[int, int],
+        offset_r: int,
+        feed_margin: int,
+        restricted_to_models: list[str],
+        color: Color,
     ) -> None: ...
-    def __lt__(self, other): ...
-    def __le__(self, other): ...
-    def __gt__(self, other): ...
-    def __ge__(self, other): ...
+    def __lt__(self, other: Any) -> bool: ...
+    def __le__(self, other: Any) -> bool: ...
+    def __gt__(self, other: Any) -> bool: ...
+    def __ge__(self, other: Any) -> bool: ...
 
 ALL_LABELS: tuple[Label]
 

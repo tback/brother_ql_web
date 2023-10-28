@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 import logging
 import random
 import sys
 from argparse import ArgumentParser, Namespace
+from typing import cast
 
 from brother_ql.devicedependent import models, label_sizes
 from brother_ql_web.configuration import Configuration, Font
@@ -11,8 +14,8 @@ from brother_ql_web.utils import collect_fonts
 logger = logging.getLogger(__name__)
 
 
-def log_level_type(value) -> int:
-    return getattr(logging, value.upper())
+def log_level_type(value: str) -> int:
+    return cast(int, getattr(logging, value.upper()))
 
 
 def get_parameters() -> Namespace:
@@ -73,7 +76,9 @@ class NoFontFound(SystemError):
     pass
 
 
-def _choose_default_font(fonts: dict, configuration: Configuration) -> None:
+def _choose_default_font(
+    fonts: dict[str, dict[str, str]], configuration: Configuration
+) -> None:
     for font in configuration.label.default_fonts:
         try:
             fonts[font.family][font.style]
@@ -96,7 +101,7 @@ def _choose_default_font(fonts: dict, configuration: Configuration) -> None:
 
 def update_configuration_from_parameters(
     parameters: Namespace, configuration: Configuration
-):
+) -> None:
     # Server configuration.
     if parameters.port:
         configuration.server.port = parameters.port

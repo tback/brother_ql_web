@@ -12,6 +12,7 @@ from brother_ql.devicedependent import (
     ROUND_DIE_CUT_LABEL,
     label_type_specs,
 )
+from brother_ql.labels import FormFactor
 from brother_ql_web.configuration import Configuration
 from brother_ql_web import utils
 from PIL import Image, ImageDraw, ImageFont
@@ -42,8 +43,8 @@ class LabelParameters:
     high_quality: bool = True
 
     @property
-    def kind(self):
-        return label_type_specs[self.label_size]["kind"]
+    def kind(self) -> FormFactor:
+        return cast(FormFactor, label_type_specs[self.label_size]["kind"])
 
     def _scale_margin(self, margin: int) -> int:
         return int(self.font_size * margin / 100.0)
@@ -83,7 +84,9 @@ class LabelParameters:
     @property
     def width_height(self) -> tuple[int, int]:
         try:
-            width, height = label_type_specs[self.label_size]["dots_printable"]
+            width, height = cast(
+                tuple[int, int], label_type_specs[self.label_size]["dots_printable"]
+            )
         except KeyError:
             raise LookupError("Unknown label_size")
 
@@ -158,7 +161,7 @@ def _determine_text_offsets(
     return horizontal_offset, vertical_offset
 
 
-def create_label_image(parameters: LabelParameters):
+def create_label_image(parameters: LabelParameters) -> Image.Image:
     image_font = ImageFont.truetype(parameters.font_path, parameters.font_size)
 
     # Workaround for a bug in multiline_textsize()
@@ -190,7 +193,7 @@ def create_label_image(parameters: LabelParameters):
     return image
 
 
-def image_to_png_bytes(image):
+def image_to_png_bytes(image: Image.Image) -> bytes:
     image_buffer = BytesIO()
     image.save(image_buffer, format="PNG")
     image_buffer.seek(0)
