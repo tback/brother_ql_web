@@ -10,6 +10,7 @@ from brother_ql_web.font_helpers import get_fonts
 
 if sys.version_info < (3, 9):
     from typing import Type
+
     BACKEND_TYPE = Type[BrotherQLBackendGeneric]
 else:
     BACKEND_TYPE = type[BrotherQLBackendGeneric]
